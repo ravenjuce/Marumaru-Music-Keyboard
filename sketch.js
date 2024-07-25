@@ -40,6 +40,7 @@ var soundFile = [
 
 let num =35;
 var claps = [];
+let onArr = [];
 
 class Clap {
   constructor(x, y, soundFile, num) {
@@ -67,12 +68,24 @@ class Clap {
   mousePressed() {
     this.sound.setVolume(1.5);
     if (dist(mouseX, mouseY, this.x, this.y) <= 50) {
+       
       if (this.sound.isPlaying() ){
         this.sound.pause();
+        onArr.pop(this)
+        console.log(onArr)
       } else {
+        if (onArr.length>3) {       
+          claps[claps.indexOf(onArr[0])].sound.pause();
+          onArr.shift();
+          console.log(claps[claps.indexOf(onArr[0])])
+          console.log(onArr)
+        } 
         this.sound.loop();
         this.amp.setInput(this.sound);
+        onArr.push(this)
+        console.log(onArr)
       }
+      
     } 
   }
 
@@ -99,6 +112,7 @@ function setup() {
     }
   }
   
+  console.log(onArr.length)
 }
 
 function draw() {
